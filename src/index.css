@@ -1,0 +1,53 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@font-face {
+    font-family: Pokemon;
+    src: url(/Pokemon\ Solid.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: Pragmatica-ExtraLight;
+    src: url(/Pokemon\ Pragmatica-ExtraLight.ttf) format('truetype');
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background: url(/background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.btn {
+  box-shadow: 0px 0px 0px 2px #9fb4f2;
+  background:linear-gradient(to bottom, #fbd743 25%, #ff1f1f 100%);
+	background-color:#7892c2;
+	border-radius:10px;
+	border:1px solid #5db9ff;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	padding:12px 20px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #5db9ff;
+}
+
+/********************************FONTS*******************************************/
+
+.title {
+	font-family: 'Pokemon';
+}
+
+.pragmatica {
+	font-family: 'Pragmatica-ExtraLight';
+}
