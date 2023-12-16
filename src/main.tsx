@@ -8,8 +8,8 @@ import Description from './pages/Description.tsx'
 import Evolutions from './pages/Evolutions.tsx'
 import Home from './pages/Home.tsx'
 
-const client = new ApolloClient({
-  uri: 'https://flyby-router-demo.herokuapp.com/',
+export const client = new ApolloClient({
+  uri: 'https://beta.pokeapi.co/graphql/v1beta',
   cache: new InMemoryCache(),
 });
 

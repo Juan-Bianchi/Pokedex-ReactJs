@@ -32,7 +32,7 @@ necesaria) Cualquier agregado extra se valorará, como por ejemplo:
 * Grilla responsive como alternativa al listado inicial
 * Pasar a graphql y apollo client con paginado
 * Search por backend por nombre parcial
-* Filtrado sobre
+* Filtrado sobre:
 
     ○ isBaby (boolean)
 

@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useWindowSize } from "../hooks/useWindowSize";
+import { NavbarProps } from "../types/NavBarProps";
 
-type NavbarProps = {
-  endpoint: string
-}
 
 const Navbar = ({endpoint}: NavbarProps) => {
 
   const [showMenu, setShowMenu] = useState(true);
-  const [windowWidth, setWindowWith] = useState(window.innerWidth);
+  const { windowWidth } = useWindowSize()
 
   const handleActiveStyle = (isActive: boolean, endpoint: string, dest: string)=> {
     if(isActive)
@@ -19,18 +18,6 @@ const Navbar = ({endpoint}: NavbarProps) => {
 
     return 'inline lg:mr-16';
   }
-
-  useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowWith(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
-  }, []);
 
   return (
     <div className="flex flex-col flex-wrap md:flex-row lg:flex-nowrap gap-3 items-center justify-start md:justify-around bg-red-600 p-2 overflow-hidden pragmatica-bold w-full">

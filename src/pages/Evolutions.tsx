@@ -8,7 +8,7 @@ const Evolutions = () => {
     <div className='flex flex-col justify-between items-center gap-7 min-h-screen'>
       <Navbar endpoint="evolutions"/>
       <div className="w-full"><EvolTitle /></div>
-      <Card />
+
       <Footer />
     </div>
   )
