@@ -2,7 +2,7 @@
 const QueryError = () => {
   return (
     <div>
-        <img src="/Error.png" alt="error" />
+        <img className="scale-75" src="/Error.png" alt="error" />
     </div>
   )
 }

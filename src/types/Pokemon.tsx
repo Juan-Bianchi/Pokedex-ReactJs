@@ -6,12 +6,12 @@ export type Pokemon = {
 }
 
 type PokemonSprite = {
-    sprites: string;
-  };
+  sprites: string;
+};
   
-  type PokemonType = {
-    pokemon_v2_type: {
-        name: string;
-        id: number;
-    }
-  };
+ export type PokemonType = {
+  pokemon_v2_type: {
+      name: string;
+      id: number;
+  }
+};

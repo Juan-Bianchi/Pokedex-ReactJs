@@ -1,6 +1,6 @@
 import ButtonRouter from "./ButtonRouter"
 
-const CardDescription = () => {
+const CardDescription = ()=> {
   return (
     <div className="w-[100%] flex justify-center">
         <div className="overflow-hidden flex flex-col justify-center items-center w-[90%] h-fit gap-7 bg-red-600 bg-opacity-50 rounded-2xl outline outline-slate-400 -outline-offset-8 p-1 py-4">
