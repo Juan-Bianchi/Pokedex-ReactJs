@@ -3,8 +3,8 @@ type SpriteType = {
     "dream_world": {
       "front_default": string
     },
-    "home": {
-      "front_shiny": string
+    'official-artwork': {
+      "front_default": string
     }
   }
 }

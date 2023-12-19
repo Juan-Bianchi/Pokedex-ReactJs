@@ -1,29 +1,18 @@
-import { useEffect } from "react";
-import { useGetPokemons } from "../hooks/useGetPokemons";
-import { DisplayProps } from "../types/DisplayProps";
-import AdvancedSearch from "./AdvancedSearch";
 import Card from "./Card";
 import QueryError from "./QueryError";
+import { DisplayProps } from "../types/PropsTypes";
 
 
-const Display = ({handleLoading}: DisplayProps) => {
-  const {pokemons, errorMsg} = useGetPokemons()
-
-  const useLoader = ()=> {
-    setTimeout(()=> {
-      handleLoading();
-    }, 1000)
-  }
-
-  useEffect(()=> {
-    useLoader();
-  })
+const Display = ({ pokemons, error }: DisplayProps) => {
+  /*const [pokemonsToRender, setPokemonsToRender] = useState(pokemons)*/
+  /*const onSearch = (pokemons: Pokemon[]) => {
+    setPokemonsToRender(pokemons)
+  }*/
   
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <AdvancedSearch />
-      {errorMsg ?
-        <div className={errorMsg && 'flex justify-center content-center'}>
+      {error ?
+        <div className={'flex justify-center content-center'}>
             <QueryError />
         </div> 
       :

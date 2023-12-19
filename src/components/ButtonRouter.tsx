@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom"
-import { ButtonRouterProps } from "../types/ButtonRouterProps"
+import { ButtonRouterProps } from "../types/PropsTypes"
+
 
 const ButtonRouter = ({endpoint, spanText}: ButtonRouterProps) => {
   return (

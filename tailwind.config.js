@@ -7,9 +7,7 @@ export default {
   theme: {
     extend: {
       transitionProperty: {
-        'h': {
-          'transition-duration': '300ms'
-        }
+        'height': 'height'
       },
     },
   },
