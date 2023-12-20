@@ -2,6 +2,7 @@ import Card from "./Card";
 import QueryError from "./QueryError";
 import { DisplayProps } from "../types/PropsTypes";
 import Loader from "./Loader";
+import EmptyQuery from "./EmptyQuery";
 
 
 const Display = ({ pokemons, error, isLoading }: DisplayProps) => {
@@ -12,9 +13,10 @@ const Display = ({ pokemons, error, isLoading }: DisplayProps) => {
         <div className={'flex justify-center content-center'}>
             <QueryError />
         </div> 
-      : isLoading
-      ?
+      : isLoading ?
         <Loader />
+      : !pokemons.length ?
+        <EmptyQuery />
       :
         <div className={pokemons && 'flex flex-wrap justify-center content-center'}>
           {pokemons.map(pokemon => <Card key={pokemon.id} pokemon={pokemon}/>)}

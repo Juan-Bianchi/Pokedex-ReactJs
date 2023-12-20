@@ -1,8 +1,18 @@
 export type Pokemon = {
-    id: string,
+    id: number,
     name: string,
     weight: number,
     pokemon_v2_pokemonspecy: PokemonSpecy;
+    pokemon_v2_pokemontypes: PokemonType[],
+    pokemon_v2_pokemonsprites: PokemonSprite[],
+}
+
+export type PokemonExtended = {
+    id: number,
+    name: string,
+    height: number,
+    weight: number,
+    pokemon_v2_pokemonspecy: PokemonSpecyExtended;
     pokemon_v2_pokemontypes: PokemonType[],
     pokemon_v2_pokemonsprites: PokemonSprite[],
 }
@@ -26,6 +36,23 @@ export type PokemonColor = {
 type PokemonSpecy = {
     is_baby: boolean,
     pokemon_v2_pokemoncolor: PokemonColor;
+};
+
+type PokemonSpecyExtended = {
+    is_baby: boolean,
+    pokemon_v2_pokemoncolor: PokemonColor;
+    pokemon_v2_evolutionchain: PokemonEvolutionChain;
+};
+
+type PokemonEvolutionChain = {
+    id: number,
+    pokemon_v2_pokemonspecies: PokemonSpecies[];
+};
+
+type PokemonSpecies = {
+    id: number
+    name: string
+    evolves_from_species_id: number
 }
 
 export type QueryPokemonType = {

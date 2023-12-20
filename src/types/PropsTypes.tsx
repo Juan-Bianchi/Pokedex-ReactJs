@@ -31,3 +31,7 @@ export type SearchPanelProps = {
   onFilter: Function,
 }
 
+export type CardDescriptionProps = {
+  pokemonId?: string
+}
+
