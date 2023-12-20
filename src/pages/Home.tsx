@@ -1,4 +1,3 @@
-import { useState } from "react"
 import Display from "../components/Display"
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
@@ -7,14 +6,26 @@ import Loader from "../components/Loader"
 import { useHomeActions } from "../hooks/useHomeActions"
 import SearchBar from "../components/SearchBar"
 import Accordion from "../components/Accordion"
+import { useGetPokemons } from "../hooks/useGetPokemons"
+import { useEffect, useState } from "react"
 
 
 const Home = () => {
-  const {onSearch, onFilter, pokemons, isLoading, errorMsg} = useHomeActions()
+  const {onSearch, onFilter, filterSettings, searchInput} = useHomeActions()
+  const {pokemons, isLoading, errorMsg} = useGetPokemons(searchInput, filterSettings)
+  const [use, setUSe] = useState(true)
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setUSe(false);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
+  
   return (
     <div className="w-full">
-      <div className={`flex-col justify-between items-center gap-7 min-h-screen ${isLoading? 'hidden': 'flex'}`}>
+      <div className={`flex-col justify-between items-center gap-7 min-h-screen ${use? 'hidden': 'flex'}`}>
         <Navbar endpoint="home"/>
         <div className="w-[90%]"><Welcome /></div>
         <div className="w-[85%] lg:w-[70%] flex flex-col justify-stretch items-center my-5 pragmatica bg-amber-500 rounded-md p-3 text-[#363b81] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
@@ -25,7 +36,7 @@ const Home = () => {
         <Display pokemons={pokemons} isLoading={isLoading} error={errorMsg} />
         <Footer />
       </div>
-      {(isLoading || !pokemons.length) && <Loader />}
+      {use && <div className="h-100vw flex flex-wrap align-middle"><Loader /></div>}
     </div>   
   )
 }

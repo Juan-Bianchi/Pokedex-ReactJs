@@ -1,35 +1,38 @@
 import { useState } from "react"
-import { useGetPokemons } from "./useGetPokemons"
-import { FilterOptions } from "../types/FilterOptions"
+import { FilterSetting } from "../types/FilterSetting"
 
 export function useHomeActions() {
   const [searchInput, setSearchInput] = useState('')
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    types: [],
-    color: [],
-    isBaby: undefined,
-    weigthRange: {
-      gte: undefined,
-      lte: undefined
-    },
+  const [filterSettings, setfilterSettings] = useState<FilterSetting>({
+    types:[],
+    color: null,
+    isBaby: null,
+    wgte: null,
+    wlte: null
   })
-
-  const {pokemons, isLoading, errorMsg} = useGetPokemons(searchInput, filterOptions)
 
   function onSearch(input: string = searchInput) {
     setSearchInput(input)
   }
 
-  function onFilter(newFilters: FilterOptions) {
-    setFilterOptions(newFilters);
+  function onFilter (newColor: string | null, newTypes: string[], wgte: number | null, wlte: number | null, newIsABaby:boolean | null) {
+
+    const updatedfilterSettings: FilterSetting = {
+      color: newColor,
+      types: [... newTypes],
+      wgte: wgte,
+      wlte: wlte,
+      isBaby: newIsABaby
+    }
+
+    setfilterSettings(updatedfilterSettings)
   }
 
   return {
     onSearch,
     onFilter,
-    pokemons,
-    errorMsg,
-    isLoading
+    filterSettings,
+    searchInput,
   }
 
 }

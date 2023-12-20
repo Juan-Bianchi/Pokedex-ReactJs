@@ -1,11 +1,9 @@
 import { useState } from "react"
 import { AccordionProps } from "../types/PropsTypes"
 import SearchPanel from "./SearchPanel"
-import { useGetFilterChecks } from "../hooks/useGetFilterChecks"
 
 const Accordion = ({onFilter}: AccordionProps) => {
   const [isActive, setIsActive] = useState(false)
-  const {checks} = useGetFilterChecks()
 
   return (
     <div className="w-full h-auto rounded-b-md overflow-hidden bg-amber-500 flex flex-col gap-[1px] justify-between items-center">
@@ -26,8 +24,8 @@ const Accordion = ({onFilter}: AccordionProps) => {
             </svg>}
         </div>
         <div className={`content text-xl text-gray-300 duration-500 transition-all px-3 overflow-hidden ${isActive? 'py-8 h-full' : 'py-0 h-0'}`}>
-          <div className={`duration-500 transition-all ease-linear text-black ${isActive? 'h-full' : 'h-0'}`}>
-            <SearchPanel onFilter={onFilter} checks={checks}/>
+          <div className={`duration-2500 transition-all ease-linear text-black ${isActive? 'h-full' : 'h-0'}`}>
+            <SearchPanel onFilter={onFilter}/>
           </div>
         </div>
       </div>

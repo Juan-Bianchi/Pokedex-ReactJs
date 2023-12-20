@@ -2,17 +2,34 @@ import { gql, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { Pokemon } from "../types/Pokemon";
 import { Data } from "../types/Data";
-import { FilterOptions } from "../types/FilterOptions";
+import { FilterSetting } from "../types/FilterSetting";
 
 
-export function useGetPokemons(name: string, filterOptions: FilterOptions){ 
+export function useGetPokemons(name: string, filterOptions: FilterSetting){ 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [pokemons, setPokemons] = useState<Pokemon[]>([])
   const [errorMsg, setErrorMsg] = useState<string>('')
+  const KNOWN_TYPES = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy', 'unknown', 'shadow']
+  const KNOWN_COLORS = ['black', 'blue', 'brown', 'gray', 'green', 'pink', 'purple', 'red', 'white', 'yellow']
 
   const POKEMONS_QUERY = gql`
-  query GetPokemon($limit: Int, $offset: Int, $name: String) {
-    pokemon_v2_pokemon(where: {name: {_iregex: $name}, }, limit: $limit, offset: $offset) {
+  query GetPokemon($offset: Int, $name: String, $color: [String], $isABaby: Boolean, $types: [String], $wgte: Int, $wlte: Int) {
+    pokemon_v2_pokemon(where: {
+      pokemon_v2_pokemonspecy: {
+        pokemon_v2_pokemoncolor: {
+          name: {_in: $color}
+        } ${filterOptions.isBaby !== null? ', is_baby: {_eq: $isABaby}' : ''} 
+      } , 
+      ${name? 'name: {_iregex: $name},': ''} 
+      pokemon_v2_pokemontypes: {
+        pokemon_v2_type: {
+          name: {_in: $types}
+        }
+      }, 
+      weight: {_gte: $wgte, _lte: $wlte}
+    }, 
+    limit: 10, 
+    offset: $offset ) {
       id
       name
       weight
@@ -36,20 +53,28 @@ export function useGetPokemons(name: string, filterOptions: FilterOptions){
     }
   }`;
 
+
   const { data, loading, error } = useQuery<Data>(POKEMONS_QUERY, {
     variables: {
-      limit: 10,
       offset: 0,
-      name: name
+      name: name,
+      color: filterOptions.color? [filterOptions.color]: KNOWN_COLORS,
+      isABaby: filterOptions.isBaby,
+      types: filterOptions.types.length? filterOptions.types: KNOWN_TYPES,
+      wgte: filterOptions.wgte || 0,
+      wlte: filterOptions.wlte || 1000000
     },
-    fetchPolicy: "no-cache" 
+    fetchPolicy: 'cache-and-network'
   });
     
   useEffect(()=> {
     setIsLoading(loading);
-    if (error) setErrorMsg(error.message)
+    if (error){
+      setErrorMsg(error.message)
+      console.log(error.message)
+    } 
     data && setPokemons(data.pokemon_v2_pokemon)
-  }, [loading, error, pokemons])
+  }, [loading, error, pokemons, filterOptions])
 
 
 

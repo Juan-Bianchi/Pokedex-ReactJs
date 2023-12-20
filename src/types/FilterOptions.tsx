@@ -1,11 +1,11 @@
 export type FilterOptions = {
   types: string[],
   color: string[],
-  isBaby: boolean | undefined,
+  isBaby: boolean | null,
   weigthRange: WeigthRange,
 }
 
 type WeigthRange = {
-  gte: number | undefined,
-  lte: number | undefined
+  gte: number | null,
+  lte: number | null
 }

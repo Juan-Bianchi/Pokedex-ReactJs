@@ -1,4 +1,3 @@
-import { ChecksData } from "./ChecksData"
 import { Pokemon } from "./Pokemon"
 
 export type ButtonRouterProps = {
@@ -30,6 +29,5 @@ export type AccordionProps = {
 
 export type SearchPanelProps = {
   onFilter: Function,
-  checks: ChecksData | undefined,
 }
 

@@ -9,6 +9,9 @@ export default {
       transitionProperty: {
         'height': 'height'
       },
+      transitionDuration: {
+        'duration-2500': '2500'
+      }
     },
   },
   plugins: [],

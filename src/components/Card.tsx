@@ -4,7 +4,7 @@ import { CardProps } from "../types/PropsTypes"
 
 const Card = ({pokemon}: CardProps) => {
   const [isShown, setIsShown] = useState(false)
-  const imageLink: SpriteType = JSON.parse(pokemon.pokemon_v2_pokemonsprites[0].sprites);
+  const imageLink: SpriteType = JSON.parse(pokemon.pokemon_v2_pokemonsprites[0].sprites); // parsing all images links to select the one I want
   const finalImageLink: string = imageLink.other.dream_world?.front_default || imageLink.other["official-artwork"].front_default;
 
   return (
