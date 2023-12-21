@@ -9,7 +9,6 @@ const CardDescription = ({pokemonId}: CardDescriptionProps)=> {
   const imageLink: SpriteType = pokemon ? JSON.parse(pokemon.pokemon_v2_pokemonsprites[0].sprites): ''; // parsing all images links to select the one I want
   const finalImageLink: string = imageLink? imageLink.other.dream_world?.front_default || imageLink.other["official-artwork"].front_default: '';
   
-  console.log(pokemon)
 
   return (
     <div className="w-[90%] md:w-[70%] flex justify-center">

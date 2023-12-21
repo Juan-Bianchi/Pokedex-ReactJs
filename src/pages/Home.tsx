@@ -6,13 +6,11 @@ import Loader from "../components/Loader"
 import { useHomeActions } from "../hooks/useHomeActions"
 import SearchBar from "../components/SearchBar"
 import Accordion from "../components/Accordion"
-import { useGetPokemons } from "../hooks/useGetPokemons"
 import { useEffect, useState } from "react"
 
 
 const Home = () => {
-  const {onSearch, onFilter, filterSettings, searchInput} = useHomeActions()
-  const {pokemons, isLoading, errorMsg} = useGetPokemons(searchInput, filterSettings)
+  const {onSearch, onFilter, pokemons, errorMsg, isLoading, refElement} = useHomeActions()
   const [loader, setLoader] = useState(true)
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const Home = () => {
           <Accordion onFilter={onFilter}  />
         </div>
         <Display pokemons={pokemons} isLoading={isLoading} error={errorMsg} />
-        <Footer />
+        <div ref={refElement} className="w-full"><Footer /></div>
       </div>
       {loader && <div className="h-100vw flex justify-center content-center items-center align-middle"><Loader /></div>}
     </div>   

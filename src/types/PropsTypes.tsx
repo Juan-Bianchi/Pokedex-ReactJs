@@ -29,6 +29,7 @@ export type AccordionProps = {
 
 export type SearchPanelProps = {
   onFilter: Function,
+  handleAccordion: Function,
 }
 
 export type CardDescriptionProps = {

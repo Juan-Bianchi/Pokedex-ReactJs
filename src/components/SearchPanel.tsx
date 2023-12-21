@@ -3,7 +3,7 @@ import { UseAdvancedFilters } from "../hooks/useAdvancedFilters"
 import { useGetFilterChecks } from "../hooks/useGetFilterChecks"
 import { SearchPanelProps } from "../types/PropsTypes"
 
-const SearchPanel = ({onFilter}: SearchPanelProps) => {
+const SearchPanel = ({onFilter, handleAccordion}: SearchPanelProps) => {
   const [isEnabled, setIsEnabled] = useState(true)
   const {checks} = useGetFilterChecks()
   const { color, maxWeight, minWeight, types, isABaby, handleAgeChange, handleMaxWeigth, handleColorChange, handleMinWeigth, handleAddType, handleRemoveType } = UseAdvancedFilters()
@@ -12,6 +12,7 @@ const SearchPanel = ({onFilter}: SearchPanelProps) => {
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, newColor: string | null, newTypes: string[], wgte: number | null, wlte: number | null, newIsABaby: boolean | null)=> {
     event.preventDefault()
     onFilter(newColor, newTypes, wgte, wlte, newIsABaby)
+    handleAccordion()
   }
 
   const onMaxWeightChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
@@ -34,6 +35,7 @@ const SearchPanel = ({onFilter}: SearchPanelProps) => {
     handleRemoveType('all');
     panelRef.current?.reset();
     setIsEnabled(true);
+    handleSubmit(event, color, types, minWeight, maxWeight, isABaby)
   }
 
   return (

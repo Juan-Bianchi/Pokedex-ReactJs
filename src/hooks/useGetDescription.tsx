@@ -59,7 +59,6 @@ export function useGetDescription(id: number) {
       console.log(error.message)
     } 
     data && setPokemon(data.pokemon_v2_pokemon[0])
-    console.log(data?.pokemon_v2_pokemon[0])
   }, [loading, error, pokemon])
 
 

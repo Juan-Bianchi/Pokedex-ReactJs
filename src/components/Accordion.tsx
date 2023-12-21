@@ -4,11 +4,14 @@ import SearchPanel from "./SearchPanel"
 
 const Accordion = ({onFilter}: AccordionProps) => {
   const [isActive, setIsActive] = useState(false)
+  const handleActiveAccordion = ()=> {
+    setIsActive(!isActive)
+  }
 
   return (
     <div className="w-full h-auto rounded-b-md overflow-hidden bg-amber-500 flex flex-col gap-[1px] justify-between items-center">
       <div className="item w-full">
-        <div className="header flex justify-between items-center p-5 bg-amber-500 font-bold cursor-pointer" onClick={()=>setIsActive(!isActive)}>
+        <div className="header flex justify-between items-center p-5 bg-amber-500 font-bold cursor-pointer" onClick={()=>handleActiveAccordion()}>
           <div>
             <div className="pragmatica-bold"><h2>Advanced Search</h2></div>
             <div>
@@ -25,7 +28,7 @@ const Accordion = ({onFilter}: AccordionProps) => {
         </div>
         <div className={`content text-xl text-gray-300 duration-500 transition-all px-3 overflow-hidden ${isActive? 'py-8 h-full' : 'py-0 h-0'}`}>
           <div className={`duration-2500 transition-all ease-linear text-black ${isActive? 'h-full' : 'h-0'}`}>
-            <SearchPanel onFilter={onFilter}/>
+            <SearchPanel onFilter={onFilter} handleAccordion={handleActiveAccordion}/>
           </div>
         </div>
       </div>
