@@ -31,9 +31,7 @@ const Navbar = ({endpoint}: NavbarProps) => {
         <h1 className="title text-amber-400 text-3xl md:hidden drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">POKEDEX</h1>
       </div>
       <ul className={`${showMenu || windowWidth >= 768 ? 'flex flex-col' : 'hidden'} text-white w-[80%] flex-wrap justify-start items-start overflow-hidden text-2xl px-3 md:w-[40%] md:justify-around md:flex-row md:items-center md:gap-4 lg:flex-nowrap`}>
-        <li><NavLink className={({isActive})=> handleActiveStyle(isActive, endpoint, '/')} to={'/'} >Home</NavLink></li>
-        <li><NavLink className={({isActive})=> handleActiveStyle(isActive, endpoint, '/evolutions')} to={'/evolutions'} >Evolutions</NavLink></li>
-        
+        <li><NavLink className={({isActive})=> handleActiveStyle(isActive, endpoint, '/')} to={'/'} >Home</NavLink></li> 
       </ul>
       <h1 className="mb-3 title text-amber-400 hidden text-3xl lg:text-5xl md:inline drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">POKEDEX</h1>
     </div>

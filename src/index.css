@@ -43,11 +43,11 @@ body {
 	justify-content: center;
 	align-items: center;
 	margin: auto;
-	height:max-content;
+	height:500px;
 }
 
 #loader img {
-	width: 40%;
+	width: 60%;
 }
 
 .btn {

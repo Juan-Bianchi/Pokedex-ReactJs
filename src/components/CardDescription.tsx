@@ -27,7 +27,7 @@ const CardDescription = ({pokemonId}: CardDescriptionProps)=> {
                 </div>
             </div> 
             <div className="w-[90%] flex flex-col md:flex-row justify-around items-center gap-3">
-                <div className={`w-[60%] flex justify-between`}>
+                <div className={`w-[55%] flex justify-between`}>
                     <img src={finalImageLink} alt="name" className="aspect-square w-[80%]" />
                     <div className={`flex flex-col flex-wrap justify-center items-start ms-3 relative gap-1 w-[150px] scale-100 start-0`}>
                         {pokemon.pokemon_v2_pokemontypes.map((pokeType) => 
