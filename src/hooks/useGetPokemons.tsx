@@ -77,7 +77,7 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
       wgte: filterOptions.wgte || 0,
       wlte: filterOptions.wlte || 1000000
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'network-only'
   });
 
   function intersection(entries: any) {
