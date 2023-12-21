@@ -7,21 +7,48 @@ import { useHomeActions } from "../hooks/useHomeActions"
 import SearchBar from "../components/SearchBar"
 import Accordion from "../components/Accordion"
 import { useGetPokemons } from "../hooks/useGetPokemons"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 
 const Home = () => {
   const {onSearch, onFilter, filterSettings, searchInput} = useHomeActions()
-  const {pokemons, isLoading, errorMsg} = useGetPokemons(searchInput, filterSettings)
-  const [loader, setLoader] = useState(true)
+  const [loader, setLoader] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+  const [offset, setOffset] = useState(0)
+  const refElement = useRef(null)
+  const {pokemons, isLoading, errorMsg} = useGetPokemons(searchInput, filterSettings, offset)
+
+  function intersection(entries: any) {
+    const firstEntry = entries[0]
+    const observer = new IntersectionObserver(intersection)
+    if(observer && refElement.current) {
+      observer.observe(refElement.current)
+    }
+
+    if(pokemons.length > offset) {
+      setHasMore(false)
+    }
+
+    console.log('has more', hasMore)
+
+    if(firstEntry.isIntersecting && hasMore) {
+      setOffset(prevOffset => prevOffset + 10)
+      console.log(offset)
+    }
+
+    observer && observer.disconnect()
+  }
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoader(false);
-    }, 1000);
+    const observer = new IntersectionObserver(intersection)
+    if(observer && refElement.current) {
+      observer.observe(refElement.current)
+    }
 
-    return () => clearTimeout(timeout);
-  }, []);
+    return ()=> {
+      observer && observer.disconnect()
+    }
+  }, [offset]);
   
   return (
     <div className="w-full min-h-screen">
@@ -34,7 +61,7 @@ const Home = () => {
           <Accordion onFilter={onFilter}  />
         </div>
         <Display pokemons={pokemons} isLoading={isLoading} error={errorMsg} />
-        <Footer />
+        {hasMore && <div ref={refElement} className="w-full"><Footer /></div>}
       </div>
       {loader && <div className="h-100vw flex justify-center content-center items-center align-middle"><Loader /></div>}
     </div>   

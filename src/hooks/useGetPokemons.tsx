@@ -5,7 +5,7 @@ import { Data } from "../types/Data";
 import { FilterSetting } from "../types/FilterSetting";
 
 
-export function useGetPokemons(name: string, filterOptions: FilterSetting){ 
+export function useGetPokemons(name: string, filterOptions: FilterSetting, offset: number){ 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [pokemons, setPokemons] = useState<Pokemon[]>([])
   const [errorMsg, setErrorMsg] = useState<string>('')
@@ -56,7 +56,7 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
 
   const { data, loading, error } = useQuery<Data>(POKEMONS_QUERY, {
     variables: {
-      offset: 0,
+      offset: offset,
       name: name,
       color: filterOptions.color? [filterOptions.color]: KNOWN_COLORS,
       isABaby: filterOptions.isBaby,
@@ -73,8 +73,10 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
       setErrorMsg(error.message)
       console.log(error.message)
     } 
-    data && setPokemons(data.pokemon_v2_pokemon)
-  }, [loading, error, pokemons, filterOptions])
+    if(data) {
+      setPokemons(prevPokemons => [...prevPokemons, ...data.pokemon_v2_pokemon]);
+    }
+  }, [loading, error, filterOptions, offset])
 
 
 
