@@ -110,7 +110,6 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
         setFilters(filterOptions)
         setOffset(0)
         setHasMore(true)
-        console.log('first')
       }
       if(name !== input) {
         setInput(name)
