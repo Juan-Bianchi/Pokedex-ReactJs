@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { FilterSetting } from "../types/FilterSetting"
+import { useGetPokemons } from "./useGetPokemons"
 
 export function useHomeActions() {
   const [searchInput, setSearchInput] = useState('')
@@ -10,6 +11,7 @@ export function useHomeActions() {
     wgte: null,
     wlte: null
   })
+  const {pokemons, isLoading, errorMsg, hasMore, refElement} = useGetPokemons(searchInput, filterSettings)
 
   function onSearch(input: string = searchInput) {
     setSearchInput(input)
@@ -26,13 +28,17 @@ export function useHomeActions() {
     }
 
     setfilterSettings(updatedfilterSettings)
+
   }
 
   return {
     onSearch,
     onFilter,
-    filterSettings,
-    searchInput,
+    pokemons,
+    isLoading,
+    errorMsg,
+    hasMore,
+    refElement
   }
 
 }

@@ -1,14 +1,26 @@
 import { gql, useQuery } from "@apollo/client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Pokemon } from "../types/Pokemon";
 import { Data } from "../types/Data";
 import { FilterSetting } from "../types/FilterSetting";
 
 
-export function useGetPokemons(name: string, filterOptions: FilterSetting, offset: number){ 
+export function useGetPokemons(name: string, filterOptions: FilterSetting){ 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [pokemons, setPokemons] = useState<Pokemon[]>([])
   const [errorMsg, setErrorMsg] = useState<string>('')
+  const [hasMore, setHasMore] = useState(true)
+  const [offset, setOffset] = useState(0)
+  const [filters, setFilters] = useState<FilterSetting>({
+    color: null,
+    types: [],
+    wgte: null,
+    wlte: null,
+    isBaby: null
+  })
+  const [input, setInput] = useState('')
+  const refElement = useRef(null)
+  
   const KNOWN_TYPES = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy', 'unknown', 'shadow']
   const KNOWN_COLORS = ['black', 'blue', 'brown', 'gray', 'green', 'pink', 'purple', 'red', 'white', 'yellow']
 
@@ -27,7 +39,8 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting, offse
         }
       }, 
       weight: {_gte: $wgte, _lte: $wlte}
-    }, 
+    },
+    order_by: {id: asc}
     limit: 10, 
     offset: $offset ) {
       id
@@ -66,23 +79,62 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting, offse
     },
     fetchPolicy: 'cache-and-network'
   });
+
+  function intersection(entries: any) {
+    const firstEntry = entries[0]
+    const observer = new IntersectionObserver(intersection)
+    if(observer && refElement.current) {
+      observer.observe(refElement.current)
+    }
+
+    if(firstEntry.isIntersecting && hasMore) {
+      setOffset(prevOffset => prevOffset + 10)
+    }
+    observer && observer.disconnect()
+  }
     
   useEffect(()=> {
+    const observer = new IntersectionObserver(intersection)
+    
     setIsLoading(loading);
     if (error){
       setErrorMsg(error.message)
       console.log(error.message)
     } 
     if(data) {
-      setPokemons(prevPokemons => [...prevPokemons, ...data.pokemon_v2_pokemon]);
+      if(data.pokemon_v2_pokemon.length < 10) {
+        setHasMore(false)
+      }
+
+      if(filterOptions != filters) {
+        setFilters(filterOptions)
+        setOffset(0)
+        setHasMore(true)
+        console.log('first')
+      }
+      if(name !== input) {
+        setInput(name)
+        setOffset(0)
+        setHasMore(true)
+      }
+      (offset)? setPokemons(prevPokemons => [...prevPokemons, ...data.pokemon_v2_pokemon]): setPokemons(data.pokemon_v2_pokemon);;
+      
+      if(observer && refElement.current) {
+        observer.observe(refElement.current)
+      }
     }
-  }, [loading, error, filterOptions, offset])
+    return ()=> {
+      observer && observer.disconnect()
+    }
+  }, [loading, error, data, filterOptions, offset])
 
 
 
   return {
     pokemons,
     isLoading,
-    errorMsg
+    errorMsg,
+    hasMore,
+    refElement
   }
 }

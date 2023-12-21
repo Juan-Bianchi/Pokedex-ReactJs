@@ -13,13 +13,12 @@ const Display = ({ pokemons, error, isLoading }: DisplayProps) => {
         <div className={'flex justify-center content-center'}>
             <QueryError />
         </div> 
-      : isLoading ?
-        <Loader />
       : !pokemons.length ?
         <EmptyQuery />
       :
         <div className={pokemons && 'flex flex-wrap justify-center content-center'}>
           {pokemons.map(pokemon => <Card key={pokemon.id} pokemon={pokemon}/>)}
+          {isLoading && <div className="w-full flex justify-center"><div className="w-[50%]"><Loader /></div></div>}
         </div>
       }
     </div>

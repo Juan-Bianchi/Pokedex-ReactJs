@@ -6,49 +6,20 @@ import Loader from "../components/Loader"
 import { useHomeActions } from "../hooks/useHomeActions"
 import SearchBar from "../components/SearchBar"
 import Accordion from "../components/Accordion"
-import { useGetPokemons } from "../hooks/useGetPokemons"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 
 const Home = () => {
-  const {onSearch, onFilter, filterSettings, searchInput} = useHomeActions()
-  const [loader, setLoader] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
-  const [offset, setOffset] = useState(0)
-  const refElement = useRef(null)
-  const {pokemons, isLoading, errorMsg} = useGetPokemons(searchInput, filterSettings, offset)
-
-  function intersection(entries: any) {
-    const firstEntry = entries[0]
-    const observer = new IntersectionObserver(intersection)
-    if(observer && refElement.current) {
-      observer.observe(refElement.current)
-    }
-
-    if(pokemons.length > offset) {
-      setHasMore(false)
-    }
-
-    console.log('has more', hasMore)
-
-    if(firstEntry.isIntersecting && hasMore) {
-      setOffset(prevOffset => prevOffset + 10)
-      console.log(offset)
-    }
-
-    observer && observer.disconnect()
-  }
+  const {onSearch, onFilter, pokemons, errorMsg, isLoading, refElement} = useHomeActions()
+  const [loader, setLoader] = useState(true)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(intersection)
-    if(observer && refElement.current) {
-      observer.observe(refElement.current)
-    }
+    const timeout = setTimeout(() => {
+      setLoader(false);
+    }, 1000);
 
-    return ()=> {
-      observer && observer.disconnect()
-    }
-  }, [offset]);
+    return () => clearTimeout(timeout);
+  }, []);
   
   return (
     <div className="w-full min-h-screen">
@@ -61,7 +32,7 @@ const Home = () => {
           <Accordion onFilter={onFilter}  />
         </div>
         <Display pokemons={pokemons} isLoading={isLoading} error={errorMsg} />
-        {hasMore && <div ref={refElement} className="w-full"><Footer /></div>}
+        <div ref={refElement} className="w-full"><Footer /></div>
       </div>
       {loader && <div className="h-100vw flex justify-center content-center items-center align-middle"><Loader /></div>}
     </div>   
