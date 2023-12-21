@@ -28,6 +28,12 @@ const SearchPanel = ({onFilter, handleAccordion}: SearchPanelProps) => {
 
   const resetFilters = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> {
     event.preventDefault();
+    handleAgeChange(null)
+    handleColorChange(null);
+    handleAgeChange(null);
+    handleMaxWeigth(null);
+    handleMinWeigth(null);
+    handleRemoveType('all');
     onFilter(null, [], null, null, null)
     panelRef.current?.reset();
     setIsEnabled(true);
