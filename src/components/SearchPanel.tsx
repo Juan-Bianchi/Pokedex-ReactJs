@@ -36,6 +36,10 @@ const SearchPanel = ({onFilter, handleAccordion}: SearchPanelProps) => {
     handleRemoveType('all');
     onFilter(null, [], null, null, null)
     panelRef.current?.reset();
+    const checkboxes = panelRef.current?.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+      checkboxes?.forEach((checkbox) => checkbox.checked = false );
+    const radios = panelRef.current?.querySelectorAll<HTMLInputElement>('input[type="radio"]');
+      radios?.forEach((radio) => radio.checked = false);
     setIsEnabled(true);
   }
 
