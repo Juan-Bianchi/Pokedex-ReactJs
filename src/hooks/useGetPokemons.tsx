@@ -82,15 +82,10 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
 
   function intersection(entries: any) {
     const firstEntry = entries[0]
-    const observer = new IntersectionObserver(intersection)
-    if(observer && refElement.current) {
-      observer.observe(refElement.current)
-    }
 
     if(firstEntry.isIntersecting && hasMore) {
       setOffset(prevOffset => prevOffset + 10)
     }
-    observer && observer.disconnect()
   }
     
   useEffect(()=> {
