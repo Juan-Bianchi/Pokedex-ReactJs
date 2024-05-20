@@ -20,16 +20,16 @@ export type NavbarProps = {
 }
 
 export type SearchBarProps = {
-  onSearch: Function
+  onSearch: (filter: string) => void,
 }
 
 export type AccordionProps = {
-  onFilter: Function,
+  onFilter: (filter: string) => void,
 }
 
 export type SearchPanelProps = {
-  onFilter: Function,
-  handleAccordion: Function,
+  onFilter: (filter: string) => void,
+  handleAccordion: (filter: string) => void,
 }
 
 export type CardDescriptionProps = {

@@ -1,4 +1,4 @@
-type SpriteType = {
+export type SpriteType = {
   'other': {
     "dream_world": {
       "front_default": string

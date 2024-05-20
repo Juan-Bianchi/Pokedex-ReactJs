@@ -6,8 +6,8 @@ import Loader from "./Loader"
 const CardDescription = ({pokemonId}: CardDescriptionProps)=> {
 
   const {pokemon, isLoading, errorMsg} = useGetDescription(Number(pokemonId))
-  const imageLink: SpriteType = pokemon ? JSON.parse(pokemon.pokemon_v2_pokemonsprites[0].sprites): ''; // parsing all images links to select the one I want
-  const finalImageLink: string = imageLink? imageLink.other.dream_world?.front_default || imageLink.other["official-artwork"].front_default: '';
+  const finalImageLink: string = pokemon ? pokemon.pokemon_v2_pokemonsprites[0].sprites.other.dream_world?.front_default || pokemon.pokemon_v2_pokemonsprites[0].sprites.other["official-artwork"].front_default: '';
+
   
 
   return (
