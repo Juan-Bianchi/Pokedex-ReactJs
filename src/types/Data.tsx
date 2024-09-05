@@ -1,9 +1,9 @@
-import { Pokemon, PokemonExtended } from "./Pokemon"
+import { Pokemon, PokemonExtended } from "./Pokemon";
 
 export type Data = {
-  pokemon_v2_pokemon: Pokemon[]
-}
+  pokemon_v2_pokemon: Pokemon[];
+};
 
 export type DataExtended = {
-  pokemon_v2_pokemon: PokemonExtended[]
-}
+  pokemon_v2_pokemon: PokemonExtended[];
+};

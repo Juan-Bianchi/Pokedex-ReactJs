@@ -4,25 +4,56 @@ import { Pokemon } from "../types/Pokemon";
 import { Data } from "../types/Data";
 import { FilterSetting } from "../types/FilterSetting";
 
-
-export function useGetPokemons(name: string, filterOptions: FilterSetting){ 
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [pokemons, setPokemons] = useState<Pokemon[]>([])
-  const [errorMsg, setErrorMsg] = useState<string>('')
-  const [hasMore, setHasMore] = useState(true)
-  const [offset, setOffset] = useState(0)
+export function useGetPokemons(name: string, filterOptions: FilterSetting) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [hasMore, setHasMore] = useState(true);
+  const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState<FilterSetting>({
     color: null,
     types: [],
     wgte: null,
     wlte: null,
-    isBaby: null
-  })
-  const [input, setInput] = useState('')
-  const refElement = useRef(null)
-  
-  const KNOWN_TYPES = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy', 'unknown', 'shadow']
-  const KNOWN_COLORS = ['black', 'blue', 'brown', 'gray', 'green', 'pink', 'purple', 'red', 'white', 'yellow']
+    isBaby: null,
+  });
+  const [input, setInput] = useState("");
+  const refElement = useRef(null);
+
+  const KNOWN_TYPES = [
+    "normal",
+    "fighting",
+    "flying",
+    "poison",
+    "ground",
+    "rock",
+    "bug",
+    "ghost",
+    "steel",
+    "fire",
+    "water",
+    "grass",
+    "electric",
+    "psychic",
+    "ice",
+    "dragon",
+    "dark",
+    "fairy",
+    "unknown",
+    "shadow",
+  ];
+  const KNOWN_COLORS = [
+    "black",
+    "blue",
+    "brown",
+    "gray",
+    "green",
+    "pink",
+    "purple",
+    "red",
+    "white",
+    "yellow",
+  ];
 
   const POKEMONS_QUERY = gql`
   query GetPokemon($offset: Int, $name: String, $color: [String], $isABaby: Boolean, $types: [String], $wgte: Int, $wlte: Int) {
@@ -30,9 +61,9 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
       pokemon_v2_pokemonspecy: {
         pokemon_v2_pokemoncolor: {
           name: {_in: $color}
-        } ${filterOptions.isBaby !== null? ', is_baby: {_eq: $isABaby}' : ''} 
+        } ${filterOptions.isBaby !== null ? ", is_baby: {_eq: $isABaby}" : ""} 
       } , 
-      ${name? 'name: {_iregex: $name},': ''} 
+      ${name ? "name: {_iregex: $name}," : ""} 
       pokemon_v2_pokemontypes: {
         pokemon_v2_type: {
           name: {_in: $types}
@@ -66,69 +97,81 @@ export function useGetPokemons(name: string, filterOptions: FilterSetting){
     }
   }`;
 
-
   const { data, loading, error } = useQuery<Data>(POKEMONS_QUERY, {
     variables: {
       offset: offset,
       name: name,
-      color: filterOptions.color? [filterOptions.color]: KNOWN_COLORS,
+      color: filterOptions.color ? [filterOptions.color] : KNOWN_COLORS,
       isABaby: filterOptions.isBaby,
-      types: filterOptions.types.length? filterOptions.types: KNOWN_TYPES,
+      types: filterOptions.types.length ? filterOptions.types : KNOWN_TYPES,
       wgte: filterOptions.wgte || 0,
-      wlte: filterOptions.wlte || 1000000
+      wlte: filterOptions.wlte || 1000000,
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
-  function intersection(entries: any) {
-    const firstEntry = entries[0]
+  useEffect(() => {
+    function intersection(entries: IntersectionObserverEntry[]): void {
+      const firstEntry = entries[0];
 
-    if(firstEntry.isIntersecting && hasMore) {
-      setOffset(prevOffset => prevOffset + 10)
+      if (firstEntry.isIntersecting && hasMore) {
+        setOffset((prevOffset) => prevOffset + 10);
+      }
     }
-  }
-    
-  useEffect(()=> {
-    const observer = new IntersectionObserver(intersection)
-    
+
+    const observer = new IntersectionObserver(intersection);
+
     setIsLoading(loading);
-    if (error){
-      setErrorMsg(error.message)
-      console.log(error.message)
-    } 
-    if(data) {
-      if(data.pokemon_v2_pokemon.length < 10) {
-        setHasMore(false)
+    if (error) {
+      setErrorMsg(error.message);
+      console.log(error.message);
+    }
+    if (data) {
+      if (data.pokemon_v2_pokemon.length < 10) {
+        setHasMore(false);
       }
 
-      if(filterOptions != filters) {
-        setFilters(filterOptions)
-        setOffset(0)
-        setHasMore(true)
+      if (filterOptions != filters) {
+        setFilters(filterOptions);
+        setOffset(0);
+        setHasMore(true);
       }
-      if(name !== input) {
-        setInput(name)
-        setOffset(0)
-        setHasMore(true)
+      if (name !== input) {
+        setInput(name);
+        setOffset(0);
+        setHasMore(true);
       }
-      (offset)? setPokemons(prevPokemons => [...prevPokemons, ...data.pokemon_v2_pokemon]): setPokemons(data.pokemon_v2_pokemon);;
-      
-      if(observer && refElement.current) {
-        observer.observe(refElement.current)
+      offset
+        ? setPokemons((prevPokemons) => [
+            ...prevPokemons,
+            ...data.pokemon_v2_pokemon,
+          ])
+        : setPokemons(data.pokemon_v2_pokemon);
+
+      if (observer && refElement.current) {
+        observer.observe(refElement.current);
       }
     }
-    return ()=> {
-      observer && observer.disconnect()
-    }
-  }, [loading, error, data, filterOptions, offset])
-
-
+    return () => {
+      observer && observer.disconnect();
+    };
+  }, [
+    loading,
+    error,
+    data,
+    filterOptions,
+    offset,
+    filters,
+    name,
+    input,
+    hasMore,
+  ]);
 
   return {
     pokemons,
     isLoading,
     errorMsg,
     hasMore,
-    refElement
-  }
+    refElement,
+  };
 }
